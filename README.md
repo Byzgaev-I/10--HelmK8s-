@@ -84,6 +84,8 @@ app-chart/
 └── values.yaml
 ```
 
+![image](https://github.com/Byzgaev-I/10-HelmK8s/blob/main/2-2%20структура%20чарта%20.png)
+
 #### 2.3. Конфигурация Chart.yaml
 ```yaml
 apiVersion: v2

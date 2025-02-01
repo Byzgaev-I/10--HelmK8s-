@@ -14,6 +14,18 @@
 - Установленный локальный Helm
 - Редактор YAML-файлов
 
+## Задание 1. Подготовить Helm-чарт для приложения
+
+1) Необходимо упаковать приложение в чарт для деплоя в разные окружения.
+2) Каждый компонент приложения деплоится отдельным deployment’ом или statefulset’ом.
+3) В переменных чарта измените образ приложения для изменения версии.
+
+## Задание 2. Запустить две версии в разных неймспейсах
+
+1) Подготовив чарт, необходимо его проверить. Запуститe несколько копий приложения.
+2) Одну версию в namespace=app1, вторую версию в том же неймспейсе, третью версию в namespace=app2.
+3) Продемонстрируйте результат.
+
 ## Выполнение работы
 
 ### 1. Подготовка рабочего окружения
@@ -49,6 +61,9 @@ echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/helm.
 sudo apt-get update
 sudo apt-get install helm
 ```
+
+![image](https://github.com/Byzgaev-I/10-HelmK8s/blob/main/1-1%20ecnfyjdrf%20HELM%20.png)
+
 
 ### 2. Создание Helm-чарта
 
@@ -112,12 +127,18 @@ kubectl create namespace app1
 kubectl create namespace app2
 ```
 
+![image](https://github.com/Byzgaev-I/10-HelmK8s/blob/main/3-1%20Создание%20namespace.png)
+
 #### 3.2. Установка релизов
 ```bash
 helm install app1-v1 app-chart --namespace app1 --set image.tag=1.16.0
 helm install app1-v2 app-chart --namespace app1 --set image.tag=1.17.0
 helm install app2-v1 app-chart --namespace app2 --set image.tag=1.18.0
 ```
+
+![image](https://github.com/Byzgaev-I/10-HelmK8s/blob/main/3-2%20установка%20релизов.png)
+
+
 
 ### 4. Проверка работоспособности
 
@@ -129,6 +150,9 @@ app1-v1                        app1       1        2025-02-01 01:31:24.242019876
 app1-v2                        app1       1        2025-02-01 01:31:31.305521843 +0300 MSK deployed  app-chart-0.1.0                       1.16.0     
 app2-v1                        app2       1        2025-02-01 01:31:39.990735761 +0300 MSK deployed  app-chart-0.1.0                       1.16.0     
 ```
+
+![image](https://github.com/Byzgaev-I/10-HelmK8s/blob/main/4-1%20проверка%20релизов%20Helm%20.png)
+
 
 #### 4.2. Проверка подов
 ```bash
@@ -142,6 +166,9 @@ NAME                                  READY   STATUS    RESTARTS   AGE
 app2-v1-app-chart-84b55d68db-5lrhw   1/1     Running   0          102s
 ```
 
+![image](https://github.com/Byzgaev-I/10-HelmK8s/blob/main/4-2%20проветка%20подов.png)
+
+
 #### 4.3. Проверка сервисов
 ```bash
 $ kubectl get services -n app1
@@ -154,18 +181,17 @@ NAME                TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)   AGE
 app2-v1-app-chart   ClusterIP   10.152.183.55   <none>        80/TCP    3m18s
 ```
 
-## Результаты
+![image](https://github.com/Byzgaev-I/10-HelmK8s/blob/main/4-3%20проверка%20снрвисов.png)
 
-✅ Установлен и настроен Helm  
-✅ Создан работающий Helm-чарт  
-✅ Развернуто три версии приложения:
+## В результате мы видим, что у нас: 
+
+ Установлен и настроен Helm  
+ Создан работающий Helm-чарт  
+ Развернуто три версии приложения:
   - app1-v1 (nginx:1.16.0)
   - app1-v2 (nginx:1.17.0)
   - app2-v1 (nginx:1.18.0)  
-✅ Все поды успешно запущены и работают  
-✅ Созданы и настроены соответствующие сервисы
+ Все поды успешно запущены и работают  
+ Созданы и настроены соответствующие сервисы
 
-## Использованные источники
-- [Официальная документация Helm](https://helm.sh/docs/)
-- [Документация MicroK8S](https://microk8s.io/docs)
-- [Документация Kubernetes](https://kubernetes.io/docs/)
+
